@@ -66,6 +66,12 @@ class PostgreSQL(AzureService):
                         location = server_details.location
                         backup = getattr(server_details, "backup", None)
                         ha = getattr(server_details, "high_availability", None)
+                        
+                        public_network_access = self._get_public_network_access(server_details)
+                        backup_retention_days = self._get_backup_retention_days(server_details)
+                        tls_min_version = self._get_tls_min_version(subscription, resource_group, postgresql_server.name)
+                        audit_logging_enabled = self._get_audit_logging_enabled(subscription, resource_group, postgresql_server.name)
+
                         flexible_servers[subscription].append(
                             Server(
                                 id=postgresql_server.id,
@@ -85,6 +91,10 @@ class PostgreSQL(AzureService):
                                     backup, "geo_redundant_backup", None
                                 ),
                                 high_availability_mode=getattr(ha, "mode", None),
+                                public_network_access=public_network_access,
+                                backup_retention_days=backup_retention_days,
+                                tls_min_version=tls_min_version,
+                                audit_logging_enabled=audit_logging_enabled,
                             )
                         )
                     except Exception as error:
@@ -100,6 +110,53 @@ class PostgreSQL(AzureService):
     def _get_resource_group(self, id):
         resource_group = id.split("/")[4]
         return resource_group
+
+    def _get_public_network_access(self, server_details) -> Optional[str]:
+        network = getattr(server_details, "network", None)
+        pna = getattr(network, "public_network_access", None)
+        if hasattr(pna, "value"):
+            return str(pna.value).upper()
+        return str(pna).upper() if pna else None
+
+    def _get_backup_retention_days(self, server_details) -> Optional[int]:
+        backup = getattr(server_details, "backup", None)
+        return getattr(backup, "backup_retention_days", None)
+
+    def _get_tls_min_version(
+        self, subscription: str, resouce_group_name: str, server_name: str
+    ) -> Optional[str]:
+        client = self.clients[subscription]
+        try:
+            config = client.configurations.get(
+                resouce_group_name, server_name, "require_secure_transport"
+            )
+            # In PostgreSQL Flexible Server, require_secure_transport dictates SSL, 
+            # while minimum TLS version might not be directly configurable.
+            # However, if we need it, we can query it. Often it doesn't exist as a separate parameter in Flexible Server
+            # We'll just return None if not found, or use a specific parameter if Azure adds it.
+            # Some environments use "tls_version" or "minimum_tls_version".
+            config = client.configurations.get(
+                resouce_group_name, server_name, "tls_version"
+            )
+            return config.value.upper()
+        except ResourceNotFoundError:
+            return None
+        except Exception:
+            return None
+
+    def _get_audit_logging_enabled(
+        self, subscription: str, resouce_group_name: str, server_name: str
+    ) -> Optional[str]:
+        client = self.clients[subscription]
+        try:
+            config = client.configurations.get(
+                resouce_group_name, server_name, "shared_preload_libraries"
+            )
+            return "ENABLED" if "pgaudit" in str(config.value).lower() else "DISABLED"
+        except ResourceNotFoundError:
+            return None
+        except Exception:
+            return None
 
     def _get_require_secure_transport(
         self, subscription, resouce_group_name, server_name
@@ -279,3 +336,7 @@ class Server:
     firewall: list[Firewall]
     geo_redundant_backup: Optional[str] = None
     high_availability_mode: Optional[str] = None
+    public_network_access: Optional[str] = None
+    backup_retention_days: Optional[int] = None
+    tls_min_version: Optional[str] = None
+    audit_logging_enabled: Optional[str] = None
