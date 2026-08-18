@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "postgresql_flexible_server_minimum_tls_version_tls12",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "postgresql",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "postgresql_flexible_server_minimum_tls_version_tls12",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "postgresql",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name postgresql_flexible_server_minimum_tls_version_tls12",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Minimum Tls Version Tls12.",
+            "Url": "https://hub.prowler.com/check/postgresql_flexible_server_minimum_tls_version_tls12"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }
