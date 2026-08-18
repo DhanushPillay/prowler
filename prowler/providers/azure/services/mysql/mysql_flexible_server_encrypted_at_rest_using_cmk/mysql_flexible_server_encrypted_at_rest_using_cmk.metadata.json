@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "mysql_flexible_server_encrypted_at_rest_using_cmk",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "mysql",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "mysql_flexible_server_encrypted_at_rest_using_cmk",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "mysql",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name mysql_flexible_server_encrypted_at_rest_using_cmk",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Mysql Flexible Server Encrypted At Rest Using Cmk.",
+            "Url": "https://hub.prowler.com/check/mysql_flexible_server_encrypted_at_rest_using_cmk"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }
