@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.cis.models import OracleCloudCISModel
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
@@ -18,10 +19,12 @@ class OracleCloudCIS(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[OracleCloudCISModel]:
+        """Returns the specific OracleCloudCISModel."""
         return OracleCloudCISModel
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "TenancyId": "",
