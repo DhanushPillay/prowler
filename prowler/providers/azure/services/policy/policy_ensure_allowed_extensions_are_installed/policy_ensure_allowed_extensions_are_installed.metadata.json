@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "policy_ensure_allowed_extensions_are_installed",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "policy",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "policy_ensure_allowed_extensions_are_installed",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "policy",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name policy_ensure_allowed_extensions_are_installed",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Policy Ensure Allowed Extensions Are Installed.",
+            "Url": "https://hub.prowler.com/check/policy_ensure_allowed_extensions_are_installed"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }
