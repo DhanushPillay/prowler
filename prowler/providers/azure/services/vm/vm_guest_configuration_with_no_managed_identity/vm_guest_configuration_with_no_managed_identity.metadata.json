@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "vm_guest_configuration_with_no_managed_identity",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "vm",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "vm_guest_configuration_with_no_managed_identity",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "vm",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name vm_guest_configuration_with_no_managed_identity",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Vm Guest Configuration With No Managed Identity.",
+            "Url": "https://hub.prowler.com/check/vm_guest_configuration_with_no_managed_identity"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }
