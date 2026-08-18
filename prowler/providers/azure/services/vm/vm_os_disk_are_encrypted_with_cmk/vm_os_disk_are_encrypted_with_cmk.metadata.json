@@ -1,0 +1,32 @@
+{
+  "Provider": "azure",
+  "CheckID": "vm_os_disk_are_encrypted_with_cmk",
+  "CheckTitle": "Check Title",
+  "CheckType": [],
+  "ServiceName": "vm",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Description",
+  "Risk": "Risk",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "",
+      "Url": ""
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}

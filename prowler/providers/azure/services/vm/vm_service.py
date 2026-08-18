@@ -61,13 +61,19 @@ class VirtualMachines(AzureService):
                     extensions = []
                     if getattr(vm, "resources", []):
                         extensions = [
-                            VirtualMachineExtension(id=extension.id)
+                            VirtualMachineExtension(
+                                id=extension.id,
+                                name=getattr(extension, "name", ""),
+                                publisher=getattr(extension, "publisher", ""),
+                                type=getattr(extension, "type_properties_type", "")
+                            )
                             for extension in vm.resources
                             if extension
                         ]
 
                     # Collect LinuxConfiguration.disablePasswordAuthentication if available
                     linux_configuration = None
+                    windows_configuration = None
                     os_profile = getattr(vm, "os_profile", None)
                     if os_profile:
                         linux_conf = getattr(os_profile, "linux_configuration", None)
@@ -75,8 +81,32 @@ class VirtualMachines(AzureService):
                             linux_configuration = LinuxConfiguration(
                                 disable_password_authentication=getattr(
                                     linux_conf, "disable_password_authentication", False
+                                ),
+                                provision_vm_agent=getattr(
+                                    linux_conf, "provision_v_m_agent", False
                                 )
                             )
+                        windows_conf = getattr(os_profile, "windows_configuration", None)
+                        if windows_conf:
+                            windows_configuration = WindowsConfiguration(
+                                provision_vm_agent=getattr(
+                                    windows_conf, "provision_v_m_agent", False
+                                )
+                            )
+
+                    parsed_os_profile = None
+                    if windows_configuration or linux_configuration:
+                        parsed_os_profile = OsProfile(
+                            windows_configuration=windows_configuration
+                        )
+
+                    # Identity
+                    azure_identity = getattr(vm, "identity", None)
+                    identity = None
+                    if azure_identity:
+                        identity = ManagedServiceIdentity(
+                            type=getattr(azure_identity, "type", "")
+                        )
 
                     # Convert Azure SDK SecurityProfile to custom SecurityProfile dataclass
                     azure_security_profile = getattr(vm, "security_profile", None)
@@ -100,6 +130,9 @@ class VirtualMachines(AzureService):
                                 azure_security_profile, "security_type", None
                             ),
                             uefi_settings=uefi_settings,
+                            encryption_at_host=getattr(
+                                azure_security_profile, "encryption_at_host", False
+                            ),
                         )
 
                     virtual_machines[subscription_id].update(
@@ -143,6 +176,12 @@ class VirtualMachines(AzureService):
                                     None,
                                 ),
                                 linux_configuration=linux_configuration,
+                                os_profile=parsed_os_profile,
+                                identity=identity,
+                                availability_set=getattr(
+                                    getattr(vm, "availability_set", None), "id", None
+                                ),
+                                zones=getattr(vm, "zones", []),
                             )
                         }
                     )
@@ -313,6 +352,7 @@ class UefiSettings(BaseModel):
 class SecurityProfile(BaseModel):
     security_type: Optional[str] = None
     uefi_settings: Optional[UefiSettings] = None
+    encryption_at_host: bool = False
 
 
 class OperatingSystemType(Enum):
@@ -343,10 +383,26 @@ class StorageProfile(BaseModel):
 
 class VirtualMachineExtension(BaseModel):
     id: str
+    name: str = ""
+    publisher: str = ""
+    type: str = ""
 
 
 class LinuxConfiguration(BaseModel):
     disable_password_authentication: bool
+    provision_vm_agent: bool = False
+
+
+class WindowsConfiguration(BaseModel):
+    provision_vm_agent: bool
+
+
+class OsProfile(BaseModel):
+    windows_configuration: Optional[WindowsConfiguration] = None
+
+
+class ManagedServiceIdentity(BaseModel):
+    type: str
 
 
 class VirtualMachine(BaseModel):
@@ -359,6 +415,10 @@ class VirtualMachine(BaseModel):
     vm_size: Optional[str] = None
     image_reference: Optional[str] = None
     linux_configuration: Optional[LinuxConfiguration] = None
+    os_profile: Optional[OsProfile] = None
+    identity: Optional[ManagedServiceIdentity] = None
+    availability_set: Optional[str] = None
+    zones: Optional[list[str]] = []
 
 
 class Disk(BaseModel):
