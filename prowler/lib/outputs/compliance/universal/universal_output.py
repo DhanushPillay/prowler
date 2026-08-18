@@ -1,6 +1,6 @@
 from csv import DictWriter
 from pathlib import Path
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Optional, Type, Optional
 
 from pydantic.v1 import create_model
 
