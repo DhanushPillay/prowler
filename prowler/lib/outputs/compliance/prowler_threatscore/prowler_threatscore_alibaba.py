@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
 from prowler.lib.outputs.compliance.prowler_threatscore.models import (
@@ -20,10 +21,12 @@ class ProwlerThreatScoreAlibaba(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[ProwlerThreatScoreAlibabaModel]:
+        """Returns the specific ProwlerThreatScoreAlibabaModel."""
         return ProwlerThreatScoreAlibabaModel
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "AccountId": "",
