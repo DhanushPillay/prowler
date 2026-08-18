@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
 from prowler.lib.outputs.compliance.iso27001.models import GCPISO27001Model
@@ -18,10 +19,12 @@ class GCPISO27001(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[GCPISO27001Model]:
+        """Returns the specific GCPISO27001Model."""
         return GCPISO27001Model
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "ProjectId": "",
@@ -31,3 +34,10 @@ class GCPISO27001(ComplianceOutputBase):
             "ProjectId": finding.account_uid,
             "Location": finding.region,
         }
+
+    def get_framework_specific_fields(self, requirement) -> dict:
+        """Returns framework-specific fields for the compliance output."""
+        return {
+            "Requirements_Name": requirement.Name,
+        }
+
