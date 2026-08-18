@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "storage",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "storage",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Storage Default Storage Account Encrypted With Cmk Not Stored In Storage Account.",
+            "Url": "https://hub.prowler.com/check/storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }

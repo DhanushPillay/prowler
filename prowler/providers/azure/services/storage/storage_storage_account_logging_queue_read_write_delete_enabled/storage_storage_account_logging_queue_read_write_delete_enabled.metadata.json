@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "storage_storage_account_logging_queue_read_write_delete_enabled",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "storage",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "storage_storage_account_logging_queue_read_write_delete_enabled",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "storage",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name storage_storage_account_logging_queue_read_write_delete_enabled",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Storage Storage Account Logging Queue Read Write Delete Enabled.",
+            "Url": "https://hub.prowler.com/check/storage_storage_account_logging_queue_read_write_delete_enabled"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }

@@ -1,32 +1,32 @@
 {
-  "Provider": "azure",
-  "CheckID": "storage_storage_account_encrypted_with_cmk",
-  "CheckTitle": "Check Title",
-  "CheckType": [],
-  "ServiceName": "storage",
-  "SubServiceName": "",
-  "ResourceIdTemplate": "",
-  "Severity": "high",
-  "ResourceType": "microsoft.resources/subscriptions",
-  "ResourceGroup": "monitoring",
-  "Description": "Description",
-  "Risk": "Risk",
-  "RelatedUrl": "",
-  "AdditionalURLs": [],
-  "Remediation": {
-    "Code": {
-      "CLI": "",
-      "NativeIaC": "",
-      "Other": "",
-      "Terraform": ""
+    "Provider": "azure",
+    "CheckID": "storage_storage_account_encrypted_with_cmk",
+    "CheckTitle": "Check Title",
+    "CheckType": [],
+    "ServiceName": "storage",
+    "SubServiceName": "",
+    "ResourceIdTemplate": "",
+    "Severity": "high",
+    "ResourceType": "microsoft.resources/subscriptions",
+    "ResourceGroup": "monitoring",
+    "Description": "Description",
+    "Risk": "Risk",
+    "RelatedUrl": "",
+    "AdditionalURLs": [],
+    "Remediation": {
+        "Code": {
+            "CLI": "az resource update --set properties.enabled=true --name storage_storage_account_encrypted_with_cmk",
+            "NativeIaC": "",
+            "Other": "",
+            "Terraform": ""
+        },
+        "Recommendation": {
+            "Text": "Review and implement the recommended configuration for Storage Storage Account Encrypted With Cmk.",
+            "Url": "https://hub.prowler.com/check/storage_storage_account_encrypted_with_cmk"
+        }
     },
-    "Recommendation": {
-      "Text": "",
-      "Url": ""
-    }
-  },
-  "Categories": [],
-  "DependsOn": [],
-  "RelatedTo": [],
-  "Notes": ""
+    "Categories": [],
+    "DependsOn": [],
+    "RelatedTo": [],
+    "Notes": ""
 }
