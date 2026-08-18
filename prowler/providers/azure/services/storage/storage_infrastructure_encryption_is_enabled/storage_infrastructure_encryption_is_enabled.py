@@ -5,20 +5,22 @@ from prowler.providers.azure.services.storage.storage_client import storage_clie
 class storage_infrastructure_encryption_is_enabled(Check):
     def execute(self) -> Check_Report_Azure:
         findings = []
-        for subscription, storage_accounts in storage_client.storage_accounts.items():
-            subscription_name = storage_client.subscriptions.get(
-                subscription, subscription
-            )
-            for storage_account in storage_accounts:
+        for subscription_id, storage_accounts in storage_client.storage_accounts.items():
+            for account in storage_accounts:
                 report = Check_Report_Azure(
-                    metadata=self.metadata(), resource=storage_account
+                    metadata=self.metadata(),
+                    resource_id=account.id,
+                    resource_name=account.name,
+                    subscription_id=subscription_id,
+                    location=account.location,
                 )
-                report.subscription = subscription
-                report.status = "PASS"
-                report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has infrastructure encryption enabled."
-                if not storage_account.infrastructure_encryption:
+                
+                if account.infrastructure_encryption:
+                    report.status = "PASS"
+                    report.status_extended = f"Storage account {account.name} has infrastructure encryption enabled."
+                else:
                     report.status = "FAIL"
-                    report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has infrastructure encryption disabled."
+                    report.status_extended = f"Storage account {account.name} does not have infrastructure encryption enabled."
 
                 findings.append(report)
 

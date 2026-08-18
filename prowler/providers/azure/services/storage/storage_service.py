@@ -14,6 +14,7 @@ class Storage(AzureService):
         self.storage_accounts = self._get_storage_accounts()
         self._get_blob_properties()
         self._get_file_share_properties()
+        self._get_queue_properties()
 
     def _get_storage_accounts(self):
         logger.info("Storage - Getting storage accounts...")
@@ -262,6 +263,52 @@ class Storage(AzureService):
                         f"Subscription ID: {subscription} -- {error.__class__.__name__}[{error.__traceback__.tb_lineno}]: {error}"
                     )
 
+    def _get_queue_properties(self):
+        logger.info("Storage - Getting queue properties...")
+        try:
+            for subscription, accounts in self.storage_accounts.items():
+                client = self.clients[subscription]
+                for account in accounts:
+                    try:
+                        properties = client.queue_services.get_service_properties(
+                            account.resouce_group_name, account.name
+                        )
+                        logging = None
+                        analytics_logging = getattr(properties, "cors", None) # Wait, is it cors? No it's analytics_logging or cors, properties usually has cors, default_service_version, logging/hour_metrics/minute_metrics
+                        analytics_logging = getattr(properties, "analytics_logging", None)
+                        if not analytics_logging:
+                            # SDK sometimes calls it 'logging' instead of 'analytics_logging' depending on version
+                            analytics_logging = getattr(properties, "logging", None)
+                        if analytics_logging:
+                            logging = QueueLogging(
+                                read=getattr(analytics_logging, "read", False),
+                                write=getattr(analytics_logging, "write", False),
+                                delete=getattr(analytics_logging, "delete", False),
+                            )
+                        account.queue_properties = QueueProperties(
+                            id=properties.id,
+                            name=properties.name,
+                            type=properties.type,
+                            logging=logging,
+                        )
+                    except Exception as error:
+                        if (
+                            "Queue is not supported for the account."
+                            in str(error).strip()
+                        ):
+                            logger.warning(
+                                f"Subscription ID: {subscription} -- {error.__class__.__name__}[{error.__traceback__.tb_lineno}]: {error}"
+                            )
+                            continue
+                        logger.error(
+                            f"Subscription ID: {subscription} -- {error.__class__.__name__}[{error.__traceback__.tb_lineno}]: {error}"
+                        )
+
+        except Exception as error:
+            logger.error(
+                f"Subscription ID: {subscription} -- {error.__class__.__name__}[{error.__traceback__.tb_lineno}]: {error}"
+            )
+
 
 class DeleteRetentionPolicy(BaseModel):
     enabled: bool
@@ -301,6 +348,19 @@ class FileServiceProperties(BaseModel):
     smb_protocol_settings: SMBProtocolSettings
 
 
+class QueueLogging(BaseModel):
+    read: bool
+    write: bool
+    delete: bool
+
+
+class QueueProperties(BaseModel):
+    id: str
+    name: str
+    type: str
+    logging: Optional[QueueLogging]
+
+
 class Account(BaseModel):
     id: str
     name: str
@@ -321,3 +381,4 @@ class Account(BaseModel):
     blob_properties: Optional[BlobProperties] = None
     default_to_entra_authorization: bool = False
     file_service_properties: Optional[FileServiceProperties] = None
+    queue_properties: Optional[QueueProperties] = None

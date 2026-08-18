@@ -5,21 +5,22 @@ from prowler.providers.azure.services.storage.storage_client import storage_clie
 class storage_default_network_access_rule_is_denied(Check):
     def execute(self) -> Check_Report_Azure:
         findings = []
-        for subscription, storage_accounts in storage_client.storage_accounts.items():
-            subscription_name = storage_client.subscriptions.get(
-                subscription, subscription
-            )
-            for storage_account in storage_accounts:
+        for subscription_id, storage_accounts in storage_client.storage_accounts.items():
+            for account in storage_accounts:
                 report = Check_Report_Azure(
-                    metadata=self.metadata(), resource=storage_account
+                    metadata=self.metadata(),
+                    resource_id=account.id,
+                    resource_name=account.name,
+                    subscription_id=subscription_id,
+                    location=account.location,
                 )
-                report.subscription = subscription
-                report.status = "PASS"
-                report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has network access rule set to Deny."
-
-                if storage_account.network_rule_set.default_action == "Allow":
+                
+                if account.network_rule_set.default_action == "Deny":
+                    report.status = "PASS"
+                    report.status_extended = f"Storage account {account.name} has default network access rule set to Deny."
+                else:
                     report.status = "FAIL"
-                    report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has network access rule set to Allow."
+                    report.status_extended = f"Storage account {account.name} does not have default network access rule set to Deny."
 
                 findings.append(report)
 

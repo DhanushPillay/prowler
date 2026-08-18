@@ -5,25 +5,26 @@ from prowler.providers.azure.services.storage.storage_client import storage_clie
 class storage_key_rotation_90_days(Check):
     def execute(self) -> Check_Report_Azure:
         findings = []
-        for subscription, storage_accounts in storage_client.storage_accounts.items():
-            subscription_name = storage_client.subscriptions.get(
-                subscription, subscription
-            )
-            for storage_account in storage_accounts:
+        for subscription_id, storage_accounts in storage_client.storage_accounts.items():
+            for account in storage_accounts:
                 report = Check_Report_Azure(
-                    metadata=self.metadata(), resource=storage_account
+                    metadata=self.metadata(),
+                    resource_id=account.id,
+                    resource_name=account.name,
+                    subscription_id=subscription_id,
+                    location=account.location,
                 )
-                report.subscription = subscription
-                if not storage_account.key_expiration_period_in_days:
-                    report.status = "FAIL"
-                    report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has no key expiration period set."
+                
+                if account.key_expiration_period_in_days is not None and account.key_expiration_period_in_days <= 90:
+                    report.status = "PASS"
+                    report.status_extended = f"Storage account {account.name} has a key expiration period of {account.key_expiration_period_in_days} days (90 days or less)."
                 else:
-                    if storage_account.key_expiration_period_in_days > 90:
-                        report.status = "FAIL"
-                        report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has an invalid key expiration period of {storage_account.key_expiration_period_in_days} days."
+                    report.status = "FAIL"
+                    if account.key_expiration_period_in_days is None:
+                        report.status_extended = f"Storage account {account.name} does not have a key expiration period configured."
                     else:
-                        report.status = "PASS"
-                        report.status_extended = f"Storage account {storage_account.name} from subscription {subscription_name} ({subscription}) has a key expiration period of {storage_account.key_expiration_period_in_days} days."
+                        report.status_extended = f"Storage account {account.name} has a key expiration period of {account.key_expiration_period_in_days} days, which is greater than 90 days."
+
                 findings.append(report)
 
         return findings
