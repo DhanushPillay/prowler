@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
 from prowler.lib.outputs.compliance.okta_idaas_stig.models import OktaIDaaSSTIGModel
@@ -18,10 +19,12 @@ class OktaIDaaSSTIG(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[OktaIDaaSSTIGModel]:
+        """Returns the specific OktaIDaaSSTIGModel."""
         return OktaIDaaSSTIGModel
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "OrganizationDomain": "",
@@ -29,3 +32,10 @@ class OktaIDaaSSTIG(ComplianceOutputBase):
         return {
             "OrganizationDomain": finding.account_name,
         }
+
+    def get_framework_specific_fields(self, requirement) -> dict:
+        """Returns framework-specific fields for the compliance output."""
+        return {
+            "Requirements_Name": requirement.Name,
+        }
+
