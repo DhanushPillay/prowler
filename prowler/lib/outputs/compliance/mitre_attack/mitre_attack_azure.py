@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
 from prowler.lib.outputs.compliance.mitre_attack.models import AzureMitreAttackModel
@@ -19,10 +20,12 @@ class AzureMitreAttack(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[AzureMitreAttackModel]:
+        """Returns the specific AzureMitreAttackModel."""
         return AzureMitreAttackModel
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "SubscriptionId": "",
@@ -32,3 +35,11 @@ class AzureMitreAttack(ComplianceOutputBase):
             "SubscriptionId": finding.account_uid,
             "Location": finding.region,
         }
+
+    def get_framework_specific_fields(self, requirement) -> dict:
+        """Returns framework-specific fields for the compliance output."""
+        return {
+            "Requirements_Name": requirement.Name,
+            "Requirements_Tactics": getattr(requirement, "Tactics", ""),
+        }
+
