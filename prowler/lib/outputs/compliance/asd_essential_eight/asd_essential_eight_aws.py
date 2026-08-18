@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.asd_essential_eight.models import (
     ASDEssentialEightAWSModel,
@@ -20,10 +21,12 @@ class ASDEssentialEightAWS(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[ASDEssentialEightAWSModel]:
+        """Returns the specific ASDEssentialEightAWSModel."""
         return ASDEssentialEightAWSModel
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "AccountId": "",
