@@ -1,6 +1,13 @@
 from csv import DictWriter
 from pathlib import Path
-from typing import List
+from abc import ABC, abstractmethod
+from typing import List, Optional, Type
+from pydantic.v1 import BaseModel
+from prowler.config.config import timestamp
+from prowler.lib.check.compliance_config_eval import (
+    apply_config_status,
+    build_requirement_config_status,
+)
 
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.logger import logger
@@ -101,16 +108,21 @@ class ComplianceOutputBase(ComplianceOutput):
     """
 
     @property
-    def model(self):
+    @abstractmethod
+    def model(self) -> Type[BaseModel]:
         """Must return the specific pydantic model class (e.g. AWSCISModel)."""
         raise NotImplementedError
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
-        """
-        Returns a dictionary with the provider specific fields (like AccountId, Region).
+    @abstractmethod
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns a dictionary with the provider specific fields (like AccountId, Region).
         If `finding` is None, return empty/default values for manual checks.
         """
         raise NotImplementedError
+
+    def get_framework_specific_fields(self, requirement) -> dict:
+        """Subclass hook to provide framework-specific fields from the requirement."""
+        return {}
 
     def transform(
         self,
@@ -118,11 +130,9 @@ class ComplianceOutputBase(ComplianceOutput):
         compliance: Compliance,
         compliance_name: str,
     ) -> None:
-        from prowler.config.config import timestamp
-        from prowler.lib.check.compliance_config_eval import (
-            apply_config_status,
-            build_requirement_config_status,
-        )
+        """
+        Transforms a list of findings into compliance format based on the specific framework requirements.
+        """
 
         requirement_config_status = build_requirement_config_status(
             compliance.Requirements
@@ -138,12 +148,20 @@ class ComplianceOutputBase(ComplianceOutput):
                     )
                     for attribute in requirement.Attributes:
                         provider_fields = self.provider_identity_fields(finding)
-                        attribute_fields = {
-                            f"Requirements_Attributes_{k}": (
-                                v if not isinstance(v, list) else ",".join(v)
-                            )
-                            for k, v in attribute.dict().items()
-                        }
+                        attribute_fields = {}
+                        for k, v in attribute.dict().items():
+                            expected_type = None
+                            if f"Requirements_Attributes_{k}" in self.model.__fields__:
+                                expected_type = self.model.__fields__[f"Requirements_Attributes_{k}"].outer_type_
+                            
+                            if expected_type and getattr(expected_type, "__origin__", expected_type) == list:
+                                val = v
+                            else:
+                                val = v if not isinstance(v, list) else ",".join(v)
+                                
+                            attribute_fields[f"Requirements_Attributes_{k}"] = val
+                        
+                        framework_fields = self.get_framework_specific_fields(requirement)
                         
                         compliance_row = self.model(
                             Provider=finding.provider,
@@ -161,6 +179,7 @@ class ComplianceOutputBase(ComplianceOutput):
                             Muted=finding.muted,
                             Framework=compliance.Framework,
                             Name=compliance.Name,
+                            **framework_fields,
                         )
                         self._data.append(compliance_row)
 
@@ -169,14 +188,23 @@ class ComplianceOutputBase(ComplianceOutput):
             if not requirement.Checks:
                 for attribute in requirement.Attributes:
                     provider_fields = self.provider_identity_fields(None)
-                    attribute_fields = {
-                        f"Requirements_Attributes_{k}": (
-                            v if not isinstance(v, list) else ",".join(v)
-                        )
-                        for k, v in attribute.dict().items()
-                    }
+                    attribute_fields = {}
+                    for k, v in attribute.dict().items():
+                        expected_type = None
+                        if f"Requirements_Attributes_{k}" in self.model.__fields__:
+                            expected_type = self.model.__fields__[f"Requirements_Attributes_{k}"].outer_type_
+                        
+                        if expected_type and getattr(expected_type, "__origin__", expected_type) == list:
+                            val = v
+                        else:
+                            val = v if not isinstance(v, list) else ",".join(v)
+                            
+                        attribute_fields[f"Requirements_Attributes_{k}"] = val
+                    
+                    framework_fields = self.get_framework_specific_fields(requirement)
+                    
                     compliance_row = self.model(
-                        Provider=compliance.Provider.lower(),
+                        Provider=findings[0].provider if findings else compliance.Provider.lower(),
                         Description=compliance.Description,
                         **provider_fields,
                         AssessmentDate=str(timestamp),
@@ -191,5 +219,6 @@ class ComplianceOutputBase(ComplianceOutput):
                         Muted=False,
                         Framework=compliance.Framework,
                         Name=compliance.Name,
+                        **framework_fields,
                     )
                     self._data.append(compliance_row)
