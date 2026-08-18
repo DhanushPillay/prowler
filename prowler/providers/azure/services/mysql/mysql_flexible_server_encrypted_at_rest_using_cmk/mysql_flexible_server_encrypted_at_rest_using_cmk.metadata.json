@@ -1,0 +1,32 @@
+{
+  "Provider": "azure",
+  "CheckID": "mysql_flexible_server_encrypted_at_rest_using_cmk",
+  "CheckTitle": "Check Title",
+  "CheckType": [],
+  "ServiceName": "mysql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Description",
+  "Risk": "Risk",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
+    },
+    "Recommendation": {
+      "Text": "",
+      "Url": ""
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
+}

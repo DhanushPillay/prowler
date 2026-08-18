@@ -28,6 +28,7 @@ class MySQL(AzureService):
                 for server in servers_list:
                     backup = getattr(server, "backup", None)
                     ha = getattr(server, "high_availability", None)
+                    data_encryption = getattr(server, "data_encryption", None)
                     servers[subscription_id].update(
                         {
                             server.id: FlexibleServer(
@@ -42,6 +43,12 @@ class MySQL(AzureService):
                                     backup, "geo_redundant_backup", None
                                 ),
                                 high_availability_mode=getattr(ha, "mode", None),
+                                backup_retention_days=getattr(
+                                    backup, "backup_retention_days", None
+                                ),
+                                encryption_type=getattr(
+                                    data_encryption, "type", None
+                                ),
                             )
                         }
                     )
@@ -91,3 +98,5 @@ class FlexibleServer:
     configurations: dict[Configuration]
     geo_redundant_backup: Optional[str] = None
     high_availability_mode: Optional[str] = None
+    backup_retention_days: Optional[int] = None
+    encryption_type: Optional[str] = None
