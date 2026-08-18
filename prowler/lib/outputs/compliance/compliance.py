@@ -1,3 +1,4 @@
+from typing import Type, Optional
 import sys
 
 from prowler.lib.logger import logger
