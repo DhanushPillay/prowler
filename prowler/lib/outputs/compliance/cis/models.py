@@ -1,9 +1,12 @@
-from typing import Optional
+from typing import Optional, Type, Optional
 
 from pydantic.v1 import BaseModel
 
 
 class CISBaseModel(BaseModel):
+    """
+    CISBaseModel generates a finding's output in CIS Compliance format.
+    """
     Provider: str
     Description: str
     AssessmentDate: str
@@ -29,6 +32,18 @@ class CISBaseModel(BaseModel):
     Muted: bool
     Framework: str
     Name: str
+
+    def dict(self, *args, **kwargs):
+        d = super().dict(*args, **kwargs)
+        base_fields = [f for f in CISBaseModel.__fields__.keys() if f not in ("Provider", "Description")]
+        ordered_keys = ["Provider", "Description"]
+        for key in d.keys():
+            if key not in ordered_keys and key not in base_fields:
+                ordered_keys.append(key)
+        for key in base_fields:
+            if key in d:
+                ordered_keys.append(key)
+        return {k: d[k] for k in ordered_keys}
 
 
 class AWSCISModel(CISBaseModel):
