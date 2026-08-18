@@ -10,6 +10,13 @@ from prowler.providers.azure.azure_provider import AzureProvider
 from prowler.providers.azure.lib.service.service import AzureService
 
 
+class PrivateEndpointConnection(BaseModel):
+    id: str
+    name: str
+    type: str
+    status: Optional[str] = None
+
+
 class BackupItem(BaseModel):
     """Model that represents a backup item."""
 
@@ -35,6 +42,7 @@ class BackupVault(BaseModel):
     location: str
     backup_protected_items: dict[str, BackupItem] = Field(default_factory=dict)
     backup_policies: dict[str, BackupPolicy] = Field(default_factory=dict)
+    private_endpoint_connections: list[PrivateEndpointConnection] = Field(default_factory=list)
 
 
 class Recovery(AzureService):
@@ -68,6 +76,33 @@ class Recovery(AzureService):
                         id=vault.id,
                         name=vault.name,
                         location=vault.location,
+                        private_endpoint_connections=[
+                            PrivateEndpointConnection(
+                                id=pec.id,
+                                name=pec.name,
+                                type=pec.type,
+                                status=getattr(
+                                    getattr(
+                                        pec, "private_link_service_connection_state", None
+                                    ),
+                                    "status",
+                                    None,
+                                ),
+                            )
+                            for pec in getattr(
+                                getattr(vault, "properties", None),
+                                "private_endpoint_connections",
+                                [],
+                            )
+                            if pec
+                        ]
+                        if getattr(vault, "properties", None)
+                        and getattr(
+                            getattr(vault, "properties", None),
+                            "private_endpoint_connections",
+                            None,
+                        )
+                        else [],
                     )
                     vaults_dict[subscription_id][vault_obj.id] = vault_obj
         except Exception as error:
