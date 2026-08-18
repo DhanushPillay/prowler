@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import Optional
 
 from azure.mgmt.resource.policy import PolicyClient
 
@@ -28,6 +29,8 @@ class Policy(AzureService):
                                 id=policy_assigment.id,
                                 name=policy_assigment.name,
                                 enforcement_mode=policy_assigment.enforcement_mode,
+                                parameters=getattr(policy_assigment, "parameters", None),
+                                policy_definition_id=getattr(policy_assigment, "policy_definition_id", None),
                             )
                         }
                     )
@@ -44,3 +47,5 @@ class PolicyAssigment:
     id: str
     name: str
     enforcement_mode: str
+    parameters: Optional[dict] = None
+    policy_definition_id: Optional[str] = None
