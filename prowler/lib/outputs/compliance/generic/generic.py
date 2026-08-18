@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.config.config import timestamp
 from prowler.lib.check.compliance_config_eval import (
     apply_config_status,
