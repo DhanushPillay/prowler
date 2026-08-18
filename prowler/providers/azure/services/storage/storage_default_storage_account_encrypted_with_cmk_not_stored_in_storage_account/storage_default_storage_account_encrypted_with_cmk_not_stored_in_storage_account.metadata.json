@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "storage",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Storage Default Storage Account Encrypted With Cmk Not Stored In Storage Account.",
-            "Url": "https://hub.prowler.com/check/storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account"
-        }
+  "Provider": "azure",
+  "CheckID": "storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account",
+  "CheckTitle": "Storage account is encrypted with CMK",
+  "CheckType": [],
+  "ServiceName": "storage",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.storage/storageaccounts",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Storage Accounts use Customer-Managed Keys stored in Key Vault.",
+  "Risk": "Default Microsoft-managed keys offer less control over key lifecycle.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az storage account update -n <account-name> -g <resource-group> --encryption-key-name <key-name> --encryption-key-source Microsoft.Keyvault --encryption-key-vault <keyvault-uri>",
+      "NativeIaC": "",
+      "Other": "1. Enable a system-assigned managed identity on the storage account: az storage account update -n <account-name> -g <resource-group> --assign-identity\n2. Grant the Key Vault 'Key Vault Crypto Service Encryption User' role to the storage account identity: az role assignment create --role 'Key Vault Crypto Service Encryption User' --assignee <identity-principal-id> --scope <keyvault-id>\n3. Configure customer-managed key encryption on the storage account.",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Storage Default Storage Account Encrypted With Cmk Not Stored In Storage Account.",
+      "Url": "https://hub.prowler.com/check/storage_default_storage_account_encrypted_with_cmk_not_stored_in_storage_account"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

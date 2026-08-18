@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "policy_ensure_asc_for_sql_servers_is_enabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "policy",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name policy_ensure_asc_for_sql_servers_is_enabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Policy Ensure Asc For Sql Servers Is Enabled.",
-            "Url": "https://hub.prowler.com/check/policy_ensure_asc_for_sql_servers_is_enabled"
-        }
+  "Provider": "azure",
+  "CheckID": "policy_ensure_asc_for_sql_servers_is_enabled",
+  "CheckTitle": "ASC for SQL Servers is enabled",
+  "CheckType": [],
+  "ServiceName": "policy",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Azure Defender is enabled for SQL Servers.",
+  "Risk": "SQL Servers may lack threat protection and vulnerability scanning.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "1. Go to Microsoft Defender for Cloud.\n2. Open Environment Settings.\n3. Select the subscription.\n4. Turn on the SQL Servers on machines plan.",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Policy Ensure Asc For Sql Servers Is Enabled.",
+      "Url": "https://hub.prowler.com/check/policy_ensure_asc_for_sql_servers_is_enabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

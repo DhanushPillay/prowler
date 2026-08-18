@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "monitor_log_profile_retention_policy_at_least_365",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "monitor",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name monitor_log_profile_retention_policy_at_least_365",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Monitor Log Profile Retention Policy At Least 365.",
-            "Url": "https://hub.prowler.com/check/monitor_log_profile_retention_policy_at_least_365"
-        }
+  "Provider": "azure",
+  "CheckID": "monitor_log_profile_retention_policy_at_least_365",
+  "CheckTitle": "Log profile retention policy is set to at least 365 days",
+  "CheckType": [],
+  "ServiceName": "monitor",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that the log profile retains activity logs for at least 365 days to meet compliance requirements.",
+  "Risk": "Logs may be prematurely deleted, hindering long-term security investigations.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az monitor log-profiles update --name default --set retentionPolicy.days=365 retentionPolicy.enabled=true",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Configure the retention policy of log profiles to 365 days or greater.",
+      "Url": "https://hub.prowler.com/check/monitor_log_profile_retention_policy_at_least_365"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

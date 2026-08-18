@@ -128,15 +128,7 @@ class PostgreSQL(AzureService):
         client = self.clients[subscription]
         try:
             config = client.configurations.get(
-                resouce_group_name, server_name, "require_secure_transport"
-            )
-            # In PostgreSQL Flexible Server, require_secure_transport dictates SSL, 
-            # while minimum TLS version might not be directly configurable.
-            # However, if we need it, we can query it. Often it doesn't exist as a separate parameter in Flexible Server
-            # We'll just return None if not found, or use a specific parameter if Azure adds it.
-            # Some environments use "tls_version" or "minimum_tls_version".
-            config = client.configurations.get(
-                resouce_group_name, server_name, "tls_version"
+                resouce_group_name, server_name, "ssl_min_protocol_version"
             )
             return config.value.upper()
         except ResourceNotFoundError:
@@ -149,13 +141,19 @@ class PostgreSQL(AzureService):
     ) -> Optional[str]:
         client = self.clients[subscription]
         try:
-            config = client.configurations.get(
+            shared_preload = client.configurations.get(
                 resouce_group_name, server_name, "shared_preload_libraries"
             )
-            return "ENABLED" if "pgaudit" in str(config.value).lower() else "DISABLED"
+            pgaudit_loaded = "pgaudit" in str(getattr(shared_preload, "value", "")).lower()
+
+            pgaudit_log = client.configurations.get(
+                resouce_group_name, server_name, "pgaudit.log"
+            )
+            pgaudit_log_value = str(getattr(pgaudit_log, "value", "")).lower()
+            pgaudit_log_enabled = bool(pgaudit_log_value and pgaudit_log_value not in ("none", "off", "null", ""))
+
+            return "ENABLED" if pgaudit_loaded and pgaudit_log_enabled else "DISABLED"
         except ResourceNotFoundError:
-            return None
-        except Exception:
             return None
 
     def _get_require_secure_transport(

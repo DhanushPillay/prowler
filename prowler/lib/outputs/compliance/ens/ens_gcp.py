@@ -23,7 +23,7 @@ class GCPENS(ComplianceOutputBase):
         """Returns the specific GCPENSModel."""
         return GCPENSModel
 
-    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict[str, str]:
         """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {

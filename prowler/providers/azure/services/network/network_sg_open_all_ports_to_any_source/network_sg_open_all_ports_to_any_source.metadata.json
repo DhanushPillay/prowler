@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "network_sg_open_all_ports_to_any_source",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "network",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name network_sg_open_all_ports_to_any_source",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Network Sg Open All Ports To Any Source.",
-            "Url": "https://hub.prowler.com/check/network_sg_open_all_ports_to_any_source"
-        }
+  "Provider": "azure",
+  "CheckID": "network_sg_open_all_ports_to_any_source",
+  "CheckTitle": "NSG does not open all ports to any source",
+  "CheckType": [],
+  "ServiceName": "network",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that NSGs do not allow inbound traffic from 'Any' to all ports.",
+  "Risk": "Opening all ports to the internet exposes resources to severe attacks.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az network nsg rule delete -g <resource-group> --nsg-name <nsg-name> -n <rule-name>",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Network Sg Open All Ports To Any Source.",
+      "Url": "https://hub.prowler.com/check/network_sg_open_all_ports_to_any_source"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

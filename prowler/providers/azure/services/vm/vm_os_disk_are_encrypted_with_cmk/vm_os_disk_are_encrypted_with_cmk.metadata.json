@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "vm_os_disk_are_encrypted_with_cmk",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "vm",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name vm_os_disk_are_encrypted_with_cmk",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Vm Os Disk Are Encrypted With Cmk.",
-            "Url": "https://hub.prowler.com/check/vm_os_disk_are_encrypted_with_cmk"
-        }
+  "Provider": "azure",
+  "CheckID": "vm_os_disk_are_encrypted_with_cmk",
+  "CheckTitle": "VM OS disks are encrypted with CMK",
+  "CheckType": [],
+  "ServiceName": "vm",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.compute/virtualmachines",
+  "ResourceGroup": "compute",
+  "Description": "Verify that OS disks of Virtual Machines are encrypted using Customer-Managed Keys (CMK).",
+  "Risk": "Default encryption is managed by Microsoft. CMKs provide greater control over disk encryption keys.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az disk update -g <resource-group> -n <os-disk-name> --encryption-type EncryptionAtRestWithCustomerKey --disk-encryption-set <disk-encryption-set-id>",
+      "NativeIaC": "",
+      "Other": "1. Stop/deallocate the Virtual Machine: az vm deallocate -g <resource-group> -n <vm-name>\n2. Identify the OS disk name: az vm show -g <resource-group> -n <vm-name> --query 'storageProfile.osDisk.name' -o tsv\n3. Update the disk with a Disk Encryption Set (DES): az disk update -g <resource-group> -n <os-disk-name> --encryption-type EncryptionAtRestWithCustomerKey --disk-encryption-set <disk-encryption-set-id>\n4. Start the Virtual Machine: az vm start -g <resource-group> -n <vm-name>",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Enable Customer-Managed Keys for VM OS disk encryption.",
+      "Url": "https://hub.prowler.com/check/vm_os_disk_are_encrypted_with_cmk"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

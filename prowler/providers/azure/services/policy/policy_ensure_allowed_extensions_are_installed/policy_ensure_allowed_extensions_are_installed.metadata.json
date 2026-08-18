@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "policy_ensure_allowed_extensions_are_installed",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "policy",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name policy_ensure_allowed_extensions_are_installed",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Policy Ensure Allowed Extensions Are Installed.",
-            "Url": "https://hub.prowler.com/check/policy_ensure_allowed_extensions_are_installed"
-        }
+  "Provider": "azure",
+  "CheckID": "policy_ensure_allowed_extensions_are_installed",
+  "CheckTitle": "Only allowed VM extensions are installed",
+  "CheckType": [],
+  "ServiceName": "policy",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Azure Policy restricts installed VM extensions to an approved list.",
+  "Risk": "Unapproved extensions may execute malicious code or create vulnerabilities.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az policy assignment create --name 'allowed-extensions' --policy c0e996f8-39cf-4af9-9f45-83fbde810432 --scope '/subscriptions/<subscription-id>' --params '{\"approvedExtensions\": {\"value\": [\"<extension-name>\"]}}'",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Policy Ensure Allowed Extensions Are Installed.",
+      "Url": "https://hub.prowler.com/check/policy_ensure_allowed_extensions_are_installed"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

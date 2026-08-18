@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "postgresql_flexible_server_backup_retention_period_35_days",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "postgresql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name postgresql_flexible_server_backup_retention_period_35_days",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Backup Retention Period 35 Days.",
-            "Url": "https://hub.prowler.com/check/postgresql_flexible_server_backup_retention_period_35_days"
-        }
+  "Provider": "azure",
+  "CheckID": "postgresql_flexible_server_backup_retention_period_35_days",
+  "CheckTitle": "PostgreSQL Flexible Server backup retention is 35 days",
+  "CheckType": [],
+  "ServiceName": "postgresql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that PostgreSQL retains backups for 35 days.",
+  "Risk": "Insufficient backup retention may lead to data loss.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az postgres flexible-server update -g <resource-group> -n <server-name> --backup-retention 35",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Backup Retention Period 35 Days.",
+      "Url": "https://hub.prowler.com/check/postgresql_flexible_server_backup_retention_period_35_days"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

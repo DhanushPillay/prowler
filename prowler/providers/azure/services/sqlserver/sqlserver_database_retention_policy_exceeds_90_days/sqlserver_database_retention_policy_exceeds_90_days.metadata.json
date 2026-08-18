@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "sqlserver_database_retention_policy_exceeds_90_days",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "sqlserver",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name sqlserver_database_retention_policy_exceeds_90_days",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Sqlserver Database Retention Policy Exceeds 90 Days.",
-            "Url": "https://hub.prowler.com/check/sqlserver_database_retention_policy_exceeds_90_days"
-        }
+  "Provider": "azure",
+  "CheckID": "sqlserver_database_retention_policy_exceeds_90_days",
+  "CheckTitle": "SQL Database retention policy exceeds 90 days",
+  "CheckType": [],
+  "ServiceName": "sqlserver",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that database backups are retained for more than 90 days.",
+  "Risk": "Insufficient backup retention might violate compliance data recovery requirements.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az sql db ltr-policy set -g <resource-group> -s <server-name> -n <db-name> --monthly-retention 'P3M'",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Sqlserver Database Retention Policy Exceeds 90 Days.",
+      "Url": "https://hub.prowler.com/check/sqlserver_database_retention_policy_exceeds_90_days"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

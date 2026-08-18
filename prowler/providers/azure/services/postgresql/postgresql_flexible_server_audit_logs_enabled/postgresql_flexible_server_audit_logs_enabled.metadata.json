@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "postgresql_flexible_server_audit_logs_enabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "postgresql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name postgresql_flexible_server_audit_logs_enabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Audit Logs Enabled.",
-            "Url": "https://hub.prowler.com/check/postgresql_flexible_server_audit_logs_enabled"
-        }
+  "Provider": "azure",
+  "CheckID": "postgresql_flexible_server_audit_logs_enabled",
+  "CheckTitle": "PostgreSQL Flexible Server audit logs are enabled",
+  "CheckType": [],
+  "ServiceName": "postgresql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that PostgreSQL audit logging is enabled.",
+  "Risk": "Missing audit logs impede tracking of database access and modifications.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az postgres flexible-server parameter set -g <resource-group> -s <server-name> -n shared_preload_libraries -v pgaudit\naz postgres flexible-server parameter set -g <resource-group> -s <server-name> -n pgaudit.log -v 'WRITE,DDL'",
+      "NativeIaC": "",
+      "Other": "1. Update 'shared_preload_libraries' to include 'pgaudit' (preserve any existing libraries separated by commas). Note: Updating shared_preload_libraries requires a server restart.\n2. Restart the PostgreSQL Flexible Server.\n3. Configure 'pgaudit.log' parameter with the desired audit events (e.g., 'WRITE, DDL, ROLE, FUNCTION').",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Audit Logs Enabled.",
+      "Url": "https://hub.prowler.com/check/postgresql_flexible_server_audit_logs_enabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

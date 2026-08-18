@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "sqlserver_advanced_data_security_enabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "sqlserver",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name sqlserver_advanced_data_security_enabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Sqlserver Advanced Data Security Enabled.",
-            "Url": "https://hub.prowler.com/check/sqlserver_advanced_data_security_enabled"
-        }
+  "Provider": "azure",
+  "CheckID": "sqlserver_advanced_data_security_enabled",
+  "CheckTitle": "SQL Server Advanced Data Security is enabled",
+  "CheckType": [],
+  "ServiceName": "sqlserver",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Advanced Data Security is enabled on SQL Servers.",
+  "Risk": "Advanced threats like SQL injection may go undetected without ADS.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az sql server advanced-threat-protection-setting update -g <resource-group> -s <server-name> --state Enabled",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Sqlserver Advanced Data Security Enabled.",
+      "Url": "https://hub.prowler.com/check/sqlserver_advanced_data_security_enabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

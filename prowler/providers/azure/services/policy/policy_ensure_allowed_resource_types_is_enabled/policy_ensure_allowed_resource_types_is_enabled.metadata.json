@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "policy_ensure_allowed_resource_types_is_enabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "policy",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name policy_ensure_allowed_resource_types_is_enabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Policy Ensure Allowed Resource Types Is Enabled.",
-            "Url": "https://hub.prowler.com/check/policy_ensure_allowed_resource_types_is_enabled"
-        }
+  "Provider": "azure",
+  "CheckID": "policy_ensure_allowed_resource_types_is_enabled",
+  "CheckTitle": "Allowed Resource Types policy is enabled",
+  "CheckType": [],
+  "ServiceName": "policy",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Azure Policy restricts deployment to allowed resource types.",
+  "Risk": "Unrestricted resource types can lead to rogue deployments.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az policy assignment create --name 'allowed-resource-types' --policy a08ec900-254a-4555-9bf5-e42af04b5c5c --scope '/subscriptions/<subscription-id>' --params '{\"listOfResourceTypesAllowed\": {\"value\": [\"<resource-type>\"]}}'",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Policy Ensure Allowed Resource Types Is Enabled.",
+      "Url": "https://hub.prowler.com/check/policy_ensure_allowed_resource_types_is_enabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

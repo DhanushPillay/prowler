@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "monitor_log_profile_all_categories",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "monitor",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name monitor_log_profile_all_categories",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Monitor Log Profile All Categories.",
-            "Url": "https://hub.prowler.com/check/monitor_log_profile_all_categories"
-        }
+  "Provider": "azure",
+  "CheckID": "monitor_log_profile_all_categories",
+  "CheckTitle": "Log profile captures all activity log categories",
+  "CheckType": [],
+  "ServiceName": "monitor",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Azure Monitor log profiles are configured to export all activity log categories.",
+  "Risk": "Incomplete activity logs may prevent detection of suspicious activities.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az monitor log-profiles create --name default --categories Write Delete Action --days 365 --enabled true --location eastus --locations global eastus westus --storage-account-id <storage-account-id>",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Update log profiles to include 'Write', 'Delete', and 'Action' categories.",
+      "Url": "https://hub.prowler.com/check/monitor_log_profile_all_categories"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "monitor_diagnostic_logs_categories",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "monitor",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name monitor_diagnostic_logs_categories",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Monitor Diagnostic Logs Categories.",
-            "Url": "https://hub.prowler.com/check/monitor_diagnostic_logs_categories"
-        }
+  "Provider": "azure",
+  "CheckID": "monitor_diagnostic_logs_categories",
+  "CheckTitle": "Diagnostic Logs are enabled for all Monitor categories",
+  "CheckType": [],
+  "ServiceName": "monitor",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Enable diagnostic logging for all categories to ensure comprehensive monitoring and auditing.",
+  "Risk": "Missing diagnostic logs can impede incident response and troubleshooting.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az monitor diagnostic-settings subscription create --name <setting-name> --location <location> --workspace <workspace-id> --logs '[{\"categoryGroup\": \"allLogs\",\"enabled\": true}]'",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Configure diagnostic settings to capture all log categories for your resources.",
+      "Url": "https://hub.prowler.com/check/monitor_diagnostic_logs_categories"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

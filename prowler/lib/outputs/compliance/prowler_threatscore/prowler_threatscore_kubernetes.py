@@ -33,6 +33,6 @@ class ProwlerThreatScoreKubernetes(ComplianceOutputBase):
                 "Namespace": "",
             }
         return {
-            "Context": finding.account_name,
+            "Context": "" if finding.account_name is None else finding.account_name,
             "Namespace": finding.region,
         }

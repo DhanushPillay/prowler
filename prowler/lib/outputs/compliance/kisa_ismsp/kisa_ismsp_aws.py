@@ -3,6 +3,7 @@ from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
 from prowler.lib.outputs.compliance.kisa_ismsp.models import AWSKISAISMSPModel
 from prowler.lib.outputs.finding import Finding
+from prowler.lib.check.compliance_models import Compliance_Requirement
 
 
 class AWSKISAISMSP(ComplianceOutputBase):
@@ -35,7 +36,7 @@ class AWSKISAISMSP(ComplianceOutputBase):
             "Region": finding.region,
         }
 
-    def get_framework_specific_fields(self, requirement) -> dict:
+    def get_framework_specific_fields(self, requirement: Compliance_Requirement) -> dict[str, str]:
         """Returns framework-specific fields for the compliance output."""
         return {
             "Requirements_Name": requirement.Name,

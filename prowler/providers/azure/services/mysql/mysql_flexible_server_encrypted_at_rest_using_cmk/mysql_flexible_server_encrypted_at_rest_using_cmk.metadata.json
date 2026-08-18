@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "mysql_flexible_server_encrypted_at_rest_using_cmk",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "mysql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name mysql_flexible_server_encrypted_at_rest_using_cmk",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Mysql Flexible Server Encrypted At Rest Using Cmk.",
-            "Url": "https://hub.prowler.com/check/mysql_flexible_server_encrypted_at_rest_using_cmk"
-        }
+  "Provider": "azure",
+  "CheckID": "mysql_flexible_server_encrypted_at_rest_using_cmk",
+  "CheckTitle": "MySQL Flexible Server is encrypted at rest using CMK",
+  "CheckType": [],
+  "ServiceName": "mysql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.dbformysql/flexibleservers",
+  "ResourceGroup": "database",
+  "Description": "Verify that MySQL Flexible Servers use Customer-Managed Keys (CMK) for encryption at rest.",
+  "Risk": "Default encryption keys are managed by Microsoft. CMKs provide greater control over key lifecycle.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az mysql flexible-server update -n <server-name> -g <resource-group> --key <key-id> --identity <identity-id>",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Enable customer-managed keys for MySQL Flexible Servers.",
+      "Url": "https://hub.prowler.com/check/mysql_flexible_server_encrypted_at_rest_using_cmk"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

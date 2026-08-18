@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "sqlserver_database_long_term_geo_redundant_backup",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "sqlserver",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name sqlserver_database_long_term_geo_redundant_backup",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Sqlserver Database Long Term Geo Redundant Backup.",
-            "Url": "https://hub.prowler.com/check/sqlserver_database_long_term_geo_redundant_backup"
-        }
+  "Provider": "azure",
+  "CheckID": "sqlserver_database_long_term_geo_redundant_backup",
+  "CheckTitle": "SQL Database long-term geo-redundant backup is enabled",
+  "CheckType": [],
+  "ServiceName": "sqlserver",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that long-term retention policies are configured for SQL Databases.",
+  "Risk": "Data may not be recoverable from regional disasters without geo-redundant backups.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az sql db ltr-policy set -g <resource-group> -s <server-name> -n <db-name> --yearly-retention 'P1Y' --week-of-year 1",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Sqlserver Database Long Term Geo Redundant Backup.",
+      "Url": "https://hub.prowler.com/check/sqlserver_database_long_term_geo_redundant_backup"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

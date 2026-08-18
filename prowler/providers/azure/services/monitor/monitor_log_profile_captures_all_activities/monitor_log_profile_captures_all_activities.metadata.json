@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "monitor_log_profile_captures_all_activities",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "monitor",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name monitor_log_profile_captures_all_activities",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Monitor Log Profile Captures All Activities.",
-            "Url": "https://hub.prowler.com/check/monitor_log_profile_captures_all_activities"
-        }
+  "Provider": "azure",
+  "CheckID": "monitor_log_profile_captures_all_activities",
+  "CheckTitle": "Log profile captures all activities",
+  "CheckType": [],
+  "ServiceName": "monitor",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Azure Monitor log profiles capture all administrative, alert, and security activities.",
+  "Risk": "Failure to capture all activities limits forensic analysis capabilities.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az monitor log-profiles update --name default --categories Write Delete Action",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Ensure that the log profile specifies all necessary categories.",
+      "Url": "https://hub.prowler.com/check/monitor_log_profile_captures_all_activities"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

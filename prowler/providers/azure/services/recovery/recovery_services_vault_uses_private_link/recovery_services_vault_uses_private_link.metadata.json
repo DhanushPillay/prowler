@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "recovery_services_vault_uses_private_link",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "recovery",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name recovery_services_vault_uses_private_link",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Recovery Services Vault Uses Private Link.",
-            "Url": "https://hub.prowler.com/check/recovery_services_vault_uses_private_link"
-        }
+  "Provider": "azure",
+  "CheckID": "recovery_services_vault_uses_private_link",
+  "CheckTitle": "Recovery Services Vault uses Private Link",
+  "CheckType": [],
+  "ServiceName": "recovery",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Private Link is configured.",
+  "Risk": "Data may traverse public networks.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "1. Note: Azure Backup requires Private Endpoints to be configured before any backup items are protected in the vault. If the vault already contains protected items, create a new vault and migrate items.\n2. Enable system-assigned managed identity on the Recovery Services Vault and grant it required network and Private DNS Zone Contributor roles.\n3. Create a Private Endpoint targeting the vault (sub-resource 'AzureBackup'): az network private-endpoint create --name <pe-name> -g <resource-group> --vnet-name <vnet-name> --subnet <subnet-name> --private-connection-resource-id <vault-id> --group-ids AzureBackup --connection-name <connection-name>\n4. Approve the Private Endpoint connection: az network private-endpoint-connection approve --id <connection-id> --description 'Approved'\n5. Configure Private DNS Zone integration (privatelink.<region>.backup.windowsazure.com)\n6. Disable public network access: az backup vault update --name <vault-name> -g <resource-group> --public-network-access Disable",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Recovery Services Vault Uses Private Link.",
+      "Url": "https://hub.prowler.com/check/recovery_services_vault_uses_private_link"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

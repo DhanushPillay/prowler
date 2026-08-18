@@ -3,6 +3,7 @@ from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.compliance_output import ComplianceOutputBase
 from prowler.lib.outputs.compliance.okta_idaas_stig.models import OktaIDaaSSTIGModel
 from prowler.lib.outputs.finding import Finding
+from prowler.lib.check.compliance_models import Compliance_Requirement
 
 
 class OktaIDaaSSTIG(ComplianceOutputBase):
@@ -30,10 +31,10 @@ class OktaIDaaSSTIG(ComplianceOutputBase):
                 "OrganizationDomain": "",
             }
         return {
-            "OrganizationDomain": finding.account_name,
+            "OrganizationDomain": "" if finding.account_name is None else finding.account_name,
         }
 
-    def get_framework_specific_fields(self, requirement) -> dict:
+    def get_framework_specific_fields(self, requirement: Compliance_Requirement) -> dict[str, str]:
         """Returns framework-specific fields for the compliance output."""
         return {
             "Requirements_Name": requirement.Name,

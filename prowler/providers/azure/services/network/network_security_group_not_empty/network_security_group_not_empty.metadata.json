@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "network_security_group_not_empty",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "network",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name network_security_group_not_empty",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Network Security Group Not Empty.",
-            "Url": "https://hub.prowler.com/check/network_security_group_not_empty"
-        }
+  "Provider": "azure",
+  "CheckID": "network_security_group_not_empty",
+  "CheckTitle": "Network Security Group is not empty",
+  "CheckType": [],
+  "ServiceName": "network",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that NSGs contain rules to filter network traffic.",
+  "Risk": "Empty NSGs do not provide any network security boundary.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az network nsg rule create -g <resource-group> --nsg-name <nsg-name> -n <rule-name> --priority 100 --access Deny --direction Inbound --protocol '*' --source-address-prefixes '*' --source-port-ranges '*' --destination-address-prefixes '*' --destination-port-ranges '*'",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Network Security Group Not Empty.",
+      "Url": "https://hub.prowler.com/check/network_security_group_not_empty"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

@@ -1,7 +1,7 @@
 from csv import DictWriter
 from pathlib import Path
 from abc import ABC, abstractmethod
-from typing import List, Optional, Type
+from typing import List, Optional, Type, Union
 from pydantic.v1 import BaseModel
 from prowler.config.config import timestamp
 from prowler.lib.check.compliance_config_eval import (
@@ -9,7 +9,11 @@ from prowler.lib.check.compliance_config_eval import (
     build_requirement_config_status,
 )
 
-from prowler.lib.check.compliance_models import Compliance
+from prowler.lib.check.compliance_models import (
+    Compliance,
+    Mitre_Requirement,
+    Compliance_Requirement,
+)
 from prowler.lib.logger import logger
 from prowler.lib.outputs.finding import Finding
 from prowler.lib.outputs.output import Output
@@ -110,18 +114,36 @@ class ComplianceOutputBase(ComplianceOutput):
     @property
     @abstractmethod
     def model(self) -> Type[BaseModel]:
-        """Must return the specific pydantic model class (e.g. AWSCISModel)."""
+        """Must return the specific pydantic model class.
+
+        Returns:
+            Type[BaseModel]: The pydantic model class used for serialization.
+        """
         raise NotImplementedError
 
     @abstractmethod
     def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
-        """Returns a dictionary with the provider specific fields (like AccountId, Region).
-        If `finding` is None, return empty/default values for manual checks.
+        """Returns a dictionary with provider-specific identity fields.
+
+        Args:
+            finding (Optional[Finding]): The finding to extract identity fields from, or None for manual checks.
+
+        Returns:
+            dict: A dictionary containing provider identity fields.
         """
         raise NotImplementedError
 
-    def get_framework_specific_fields(self, requirement) -> dict:
-        """Subclass hook to provide framework-specific fields from the requirement."""
+    def get_framework_specific_fields(
+        self, requirement: Union[Mitre_Requirement, Compliance_Requirement]
+    ) -> dict[str, str]:
+        """Subclass hook to provide framework-specific fields from the requirement.
+        
+        Args:
+            requirement (Union[Mitre_Requirement, Compliance_Requirement]): The compliance requirement to extract framework-specific data from.
+            
+        Returns:
+            dict[str, str]: A dictionary containing framework-specific fields to be appended to the model.
+        """
         return {}
 
     def transform(
@@ -130,13 +152,22 @@ class ComplianceOutputBase(ComplianceOutput):
         compliance: Compliance,
         compliance_name: str,
     ) -> None:
-        """
-        Transforms a list of findings into compliance format based on the specific framework requirements.
+        """Transforms a list of findings into compliance format based on the specific framework requirements.
+
+        Args:
+            findings (List[Finding]): The list of findings to transform.
+            compliance (Compliance): The compliance framework definition.
+            compliance_name (str): The name of the compliance framework.
+
+        Returns:
+            None
         """
 
         requirement_config_status = build_requirement_config_status(
             compliance.Requirements
         )
+
+        provider = findings[0].provider if findings else compliance.Provider.lower()
 
         for finding in findings:
             for requirement in compliance.Requirements:
@@ -164,7 +195,7 @@ class ComplianceOutputBase(ComplianceOutput):
                         framework_fields = self.get_framework_specific_fields(requirement)
                         
                         compliance_row = self.model(
-                            Provider=finding.provider,
+                            Provider=provider,
                             Description=compliance.Description,
                             **provider_fields,
                             AssessmentDate=str(timestamp),
@@ -204,7 +235,7 @@ class ComplianceOutputBase(ComplianceOutput):
                     framework_fields = self.get_framework_specific_fields(requirement)
                     
                     compliance_row = self.model(
-                        Provider=findings[0].provider if findings else compliance.Provider.lower(),
+                        Provider=provider,
                         Description=compliance.Description,
                         **provider_fields,
                         AssessmentDate=str(timestamp),

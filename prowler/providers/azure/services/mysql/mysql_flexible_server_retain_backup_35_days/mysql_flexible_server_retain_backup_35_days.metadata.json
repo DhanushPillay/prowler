@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "mysql_flexible_server_retain_backup_35_days",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "mysql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name mysql_flexible_server_retain_backup_35_days",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Mysql Flexible Server Retain Backup 35 Days.",
-            "Url": "https://hub.prowler.com/check/mysql_flexible_server_retain_backup_35_days"
-        }
+  "Provider": "azure",
+  "CheckID": "mysql_flexible_server_retain_backup_35_days",
+  "CheckTitle": "MySQL Flexible Server backup retention is at least 35 days",
+  "CheckType": [],
+  "ServiceName": "mysql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.dbformysql/flexibleservers",
+  "ResourceGroup": "database",
+  "Description": "Verify that MySQL Flexible Server retains backups for 35 days or more.",
+  "Risk": "Insufficient backup retention may lead to data loss in case of long-undetected corruption.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az mysql flexible-server update --name <server-name> --resource-group <resource-group> --backup-retention 35",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Mysql Flexible Server Retain Backup 35 Days.",
+      "Url": "https://hub.prowler.com/check/mysql_flexible_server_retain_backup_35_days"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

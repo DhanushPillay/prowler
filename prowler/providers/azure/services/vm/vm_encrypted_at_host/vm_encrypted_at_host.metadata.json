@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "vm_encrypted_at_host",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "vm",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name vm_encrypted_at_host",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Vm Encrypted At Host.",
-            "Url": "https://hub.prowler.com/check/vm_encrypted_at_host"
-        }
+  "Provider": "azure",
+  "CheckID": "vm_encrypted_at_host",
+  "CheckTitle": "VM disks are encrypted at host",
+  "CheckType": [],
+  "ServiceName": "vm",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.compute/virtualmachines",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Encryption at Host is enabled for VMs.",
+  "Risk": "Data is not encrypted end-to-end.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az vm update -n <vm-name> -g <resource-group> --encryption-at-host true",
+      "Other": "",
+      "NativeIaC": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Enable Encryption at Host for the Virtual Machine to ensure data is encrypted end-to-end.",
+      "Url": "https://hub.prowler.com/check/vm_encrypted_at_host"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

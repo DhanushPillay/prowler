@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "vm_availability_zones_enabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "vm",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name vm_availability_zones_enabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Vm Availability Zones Enabled.",
-            "Url": "https://hub.prowler.com/check/vm_availability_zones_enabled"
-        }
+  "Provider": "azure",
+  "CheckID": "vm_availability_zones_enabled",
+  "CheckTitle": "Virtual Machine uses Availability Zones",
+  "CheckType": [],
+  "ServiceName": "vm",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.compute/virtualmachines",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that VMs are deployed across availability zones.",
+  "Risk": "VMs not in availability zones are susceptible to datacenter failures.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "Other": "1. Deploy multiple VM instances or a VM Scale Set across Availability Zones, or configure Azure Site Recovery for zone-to-zone disaster recovery.",
+      "NativeIaC": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Deploy multiple VM instances or a VM Scale Set across Availability Zones, or configure Azure Site Recovery for zone-to-zone disaster recovery.",
+      "Url": "https://hub.prowler.com/check/vm_availability_zones_enabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "sqlserver_public_network_access_disabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "sqlserver",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name sqlserver_public_network_access_disabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Sqlserver Public Network Access Disabled.",
-            "Url": "https://hub.prowler.com/check/sqlserver_public_network_access_disabled"
-        }
+  "Provider": "azure",
+  "CheckID": "sqlserver_public_network_access_disabled",
+  "CheckTitle": "SQL Server public network access is disabled",
+  "CheckType": [],
+  "ServiceName": "sqlserver",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that SQL Servers reject public network access.",
+  "Risk": "Publicly accessible databases are highly vulnerable to brute-force and exploit attempts.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az sql server update -n <server-name> -g <resource-group> --public-network-access Disabled",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Sqlserver Public Network Access Disabled.",
+      "Url": "https://hub.prowler.com/check/sqlserver_public_network_access_disabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

@@ -33,10 +33,25 @@ class CISBaseModel(BaseModel):
     Framework: str
     Name: str
 
-    def dict(self, *args, **kwargs):
+    def dict(self, *args, **kwargs) -> dict:
+        """
+        Generate a dictionary representation of the model, ensuring specific column order.
+        
+        Args:
+            *args: Variable length argument list passed to BaseModel.dict().
+            **kwargs: Arbitrary keyword arguments passed to BaseModel.dict().
+            
+        Returns:
+            dict: The dictionary representation of the model with enforced ordering for CIS outputs.
+        """
         d = super().dict(*args, **kwargs)
         base_fields = [f for f in CISBaseModel.__fields__.keys() if f not in ("Provider", "Description")]
-        ordered_keys = ["Provider", "Description"]
+        ordered_keys = []
+        if "Provider" in d:
+            ordered_keys.append("Provider")
+        if "Description" in d:
+            ordered_keys.append("Description")
+            
         for key in d.keys():
             if key not in ordered_keys and key not in base_fields:
                 ordered_keys.append(key)

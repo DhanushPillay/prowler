@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "postgresql_flexible_server_encrypted_at_rest_using_cmk",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "postgresql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name postgresql_flexible_server_encrypted_at_rest_using_cmk",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Encrypted At Rest Using Cmk.",
-            "Url": "https://hub.prowler.com/check/postgresql_flexible_server_encrypted_at_rest_using_cmk"
-        }
+  "Provider": "azure",
+  "CheckID": "postgresql_flexible_server_encrypted_at_rest_using_cmk",
+  "CheckTitle": "PostgreSQL Flexible Server uses CMK encryption",
+  "CheckType": [],
+  "ServiceName": "postgresql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that PostgreSQL Flexible Servers use CMK.",
+  "Risk": "Default encryption is managed by Microsoft.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "",
+      "NativeIaC": "",
+      "Other": "Data encryption with Customer-Managed Keys (CMK) must be enabled at server creation time. To enable CMK for an existing server, create a new PostgreSQL Flexible Server with CMK enabled and migrate the database using Point-in-Time Restore (PITR) or dump and restore.",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Encrypted At Rest Using Cmk.",
+      "Url": "https://hub.prowler.com/check/postgresql_flexible_server_encrypted_at_rest_using_cmk"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

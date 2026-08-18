@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from typing import List, Optional
 
+from azure.core.exceptions import ResourceNotFoundError
 from azure.mgmt.sql import SqlManagementClient
 
 from prowler.lib.logger import logger
@@ -128,6 +129,9 @@ class SQLServer(AzureService):
                 tde_encrypted = self._get_transparent_data_encryption(
                     subscription, resource_group, server_name, database.name
                 )
+                ltr_policy = self._get_long_term_retention_policy(
+                    subscription, resource_group, server_name, database.name
+                )
                 databases.append(
                     Database(
                         id=database.id,
@@ -142,6 +146,7 @@ class SQLServer(AzureService):
                             location=tde_encrypted.location,
                             status=tde_encrypted.status,
                         ),
+                        ltr_policy=ltr_policy,
                     )
                 )
         except Exception as error:
@@ -149,6 +154,40 @@ class SQLServer(AzureService):
                 f"Subscription ID: {subscription} -- {error.__class__.__name__}[{error.__traceback__.tb_lineno}]: {error}"
             )
         return databases
+
+    def _get_long_term_retention_policy(
+        self, subscription: str, resource_group: str, server_name: str, database_name: str
+    ) -> Optional["LongTermRetentionPolicy"]:
+        """Get the Long Term Retention Policy for a database.
+
+        Args:
+            subscription (str): The Azure subscription ID.
+            resource_group (str): The resource group name.
+            server_name (str): The SQL Server name.
+            database_name (str): The SQL Database name.
+
+        Returns:
+            Optional[LongTermRetentionPolicy]: The LongTermRetentionPolicy object if found, otherwise None.
+        """
+        client = self.clients[subscription]
+        try:
+            ltr_policy = client.long_term_retention_policies.get(
+                resource_group_name=resource_group,
+                server_name=server_name,
+                database_name=database_name,
+                policy_name="default",
+            )
+            return LongTermRetentionPolicy(
+                id=ltr_policy.id,
+                name=ltr_policy.name,
+                type=ltr_policy.type,
+                weekly_retention=getattr(ltr_policy, "weekly_retention", None),
+                monthly_retention=getattr(ltr_policy, "monthly_retention", None),
+                yearly_retention=getattr(ltr_policy, "yearly_retention", None),
+                week_of_year=getattr(ltr_policy, "week_of_year", None),
+            )
+        except ResourceNotFoundError:
+            return None
 
     def _get_vulnerability_assesments(self, subscription, resource_group, server_name):
         client = self.clients[subscription]
@@ -239,6 +278,29 @@ class TransparentDataEncryption:
 
 
 @dataclass
+class LongTermRetentionPolicy:
+    """Represents a SQL Database Long Term Retention Policy.
+
+    Attributes:
+        id (str): The resource ID of the policy.
+        name (str): The name of the policy.
+        type (str): The resource type of the policy.
+        weekly_retention (Optional[str]): The weekly retention policy (ISO 8601 format).
+        monthly_retention (Optional[str]): The monthly retention policy (ISO 8601 format).
+        yearly_retention (Optional[str]): The yearly retention policy (ISO 8601 format).
+        week_of_year (Optional[int]): The week of year to take the yearly backup.
+    """
+
+    id: str
+    name: str
+    type: str
+    weekly_retention: Optional[str] = None
+    monthly_retention: Optional[str] = None
+    yearly_retention: Optional[str] = None
+    week_of_year: Optional[int] = None
+
+
+@dataclass
 class Database:
     id: str
     name: str
@@ -246,6 +308,7 @@ class Database:
     location: str
     managed_by: str
     tde_encryption: TransparentDataEncryption
+    ltr_policy: Optional[LongTermRetentionPolicy] = None
 
 
 @dataclass

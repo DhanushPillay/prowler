@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "vm_guest_configuration_with_no_managed_identity",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "vm",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name vm_guest_configuration_with_no_managed_identity",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Vm Guest Configuration With No Managed Identity.",
-            "Url": "https://hub.prowler.com/check/vm_guest_configuration_with_no_managed_identity"
-        }
+  "Provider": "azure",
+  "CheckID": "vm_guest_configuration_with_no_managed_identity",
+  "CheckTitle": "Virtual Machine Guest Configuration extension is configured with a system-assigned managed identity",
+  "CheckType": [],
+  "ServiceName": "vm",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.compute/virtualmachines",
+  "ResourceGroup": "compute",
+  "Description": "Verify that Virtual Machines with the Guest Configuration extension installed have a system-assigned managed identity enabled.",
+  "Risk": "Without a system-assigned managed identity, the Guest Configuration extension cannot authenticate to Azure services to report compliance and apply configurations.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az vm identity assign -n <vm-name> -g <resource-group>",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Assign a system-assigned managed identity to Virtual Machines with Guest Configuration extension.",
+      "Url": "https://hub.prowler.com/check/vm_guest_configuration_with_no_managed_identity"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

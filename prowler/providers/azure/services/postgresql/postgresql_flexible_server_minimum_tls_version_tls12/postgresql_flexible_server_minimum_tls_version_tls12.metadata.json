@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "postgresql_flexible_server_minimum_tls_version_tls12",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "postgresql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name postgresql_flexible_server_minimum_tls_version_tls12",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Minimum Tls Version Tls12.",
-            "Url": "https://hub.prowler.com/check/postgresql_flexible_server_minimum_tls_version_tls12"
-        }
+  "Provider": "azure",
+  "CheckID": "postgresql_flexible_server_minimum_tls_version_tls12",
+  "CheckTitle": "PostgreSQL Flexible Server uses TLS 1.2",
+  "CheckType": [],
+  "ServiceName": "postgresql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that PostgreSQL enforces TLS 1.2 minimum.",
+  "Risk": "Older TLS versions are vulnerable to attacks.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az postgres flexible-server parameter set -g <resource-group> -s <server-name> -n ssl_min_protocol_version -v TLSv1.2",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Minimum Tls Version Tls12.",
+      "Url": "https://hub.prowler.com/check/postgresql_flexible_server_minimum_tls_version_tls12"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

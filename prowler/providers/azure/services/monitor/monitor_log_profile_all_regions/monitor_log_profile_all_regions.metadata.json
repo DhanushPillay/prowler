@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "monitor_log_profile_all_regions",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "monitor",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name monitor_log_profile_all_regions",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Monitor Log Profile All Regions.",
-            "Url": "https://hub.prowler.com/check/monitor_log_profile_all_regions"
-        }
+  "Provider": "azure",
+  "CheckID": "monitor_log_profile_all_regions",
+  "CheckTitle": "Log profile captures activity logs for all regions",
+  "CheckType": [],
+  "ServiceName": "monitor",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that Azure Monitor log profiles are configured to export activity logs for all regions.",
+  "Risk": "Missing logs from certain regions can create blind spots in security monitoring.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az monitor log-profiles create --name default --categories Write Delete Action --days 365 --enabled true --location eastus --locations $(az account list-locations --query '[].name' -o tsv) global --storage-account-id <storage-account-id>",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Update log profiles to include all active regions and 'global'.",
+      "Url": "https://hub.prowler.com/check/monitor_log_profile_all_regions"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }

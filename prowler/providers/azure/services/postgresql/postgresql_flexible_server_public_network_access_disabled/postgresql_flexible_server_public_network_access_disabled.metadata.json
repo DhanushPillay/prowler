@@ -1,32 +1,32 @@
 {
-    "Provider": "azure",
-    "CheckID": "postgresql_flexible_server_public_network_access_disabled",
-    "CheckTitle": "Check Title",
-    "CheckType": [],
-    "ServiceName": "postgresql",
-    "SubServiceName": "",
-    "ResourceIdTemplate": "",
-    "Severity": "high",
-    "ResourceType": "microsoft.resources/subscriptions",
-    "ResourceGroup": "monitoring",
-    "Description": "Description",
-    "Risk": "Risk",
-    "RelatedUrl": "",
-    "AdditionalURLs": [],
-    "Remediation": {
-        "Code": {
-            "CLI": "az resource update --set properties.enabled=true --name postgresql_flexible_server_public_network_access_disabled",
-            "NativeIaC": "",
-            "Other": "",
-            "Terraform": ""
-        },
-        "Recommendation": {
-            "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Public Network Access Disabled.",
-            "Url": "https://hub.prowler.com/check/postgresql_flexible_server_public_network_access_disabled"
-        }
+  "Provider": "azure",
+  "CheckID": "postgresql_flexible_server_public_network_access_disabled",
+  "CheckTitle": "PostgreSQL Flexible Server disables public network access",
+  "CheckType": [],
+  "ServiceName": "postgresql",
+  "SubServiceName": "",
+  "ResourceIdTemplate": "",
+  "Severity": "high",
+  "ResourceType": "microsoft.resources/subscriptions",
+  "ResourceGroup": "monitoring",
+  "Description": "Verify that PostgreSQL rejects public network access.",
+  "Risk": "Publicly accessible databases are vulnerable to attacks.",
+  "RelatedUrl": "",
+  "AdditionalURLs": [],
+  "Remediation": {
+    "Code": {
+      "CLI": "az postgres flexible-server update -g <resource-group> -n <server-name> --public-access Disabled",
+      "NativeIaC": "",
+      "Other": "",
+      "Terraform": ""
     },
-    "Categories": [],
-    "DependsOn": [],
-    "RelatedTo": [],
-    "Notes": ""
+    "Recommendation": {
+      "Text": "Review and implement the recommended configuration for Postgresql Flexible Server Public Network Access Disabled.",
+      "Url": "https://hub.prowler.com/check/postgresql_flexible_server_public_network_access_disabled"
+    }
+  },
+  "Categories": [],
+  "DependsOn": [],
+  "RelatedTo": [],
+  "Notes": ""
 }
