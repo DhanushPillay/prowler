@@ -1,3 +1,4 @@
+from typing import Type, Optional
 from prowler.lib.check.compliance_models import Compliance
 from prowler.lib.outputs.compliance.aws_well_architected.models import (
     AWSWellArchitectedModel,
@@ -20,10 +21,12 @@ class AWSWellArchitected(ComplianceOutputBase):
 
 
     @property
-    def model(self):
+    def model(self) -> Type[AWSWellArchitectedModel]:
+        """Returns the specific AWSWellArchitectedModel."""
         return AWSWellArchitectedModel
 
-    def provider_identity_fields(self, finding: Finding) -> dict:
+    def provider_identity_fields(self, finding: Optional[Finding]) -> dict:
+        """Returns the provider specific fields for the compliance output."""
         if finding is None:
             return {
                 "AccountId": "",
